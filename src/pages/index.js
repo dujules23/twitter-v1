@@ -12,7 +12,7 @@ export default function Home() {
         <title>Twitter Clone</title>
       </Head>
 
-      <main>
+      <main className="flex min-h-screen max-w-7xl mx-auto">
         {/* Side Bar */}
         <Sidebar />
         {/* Feed */}

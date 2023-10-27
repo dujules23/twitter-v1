@@ -1,14 +1,13 @@
-import React from "react";
+import { HomeIcon, HashtagIcon } from "@heroicons/react/24/solid";
+
 import {
-  HomeIcon,
-  HashtagIcon,
   BellIcon,
   InboxIcon,
   BookmarkIcon,
   ClipboardIcon,
   UserIcon,
   EllipsisHorizontalCircleIcon,
-} from "@heroicons/react/20/solid";
+} from "@heroicons/react/24/outline";
 
 export const iconData = [
   {
