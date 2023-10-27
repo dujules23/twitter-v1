@@ -41,8 +41,8 @@ export default function Sidebar() {
         <div className="leading-5 hidden xl:inline">
           <h4 className="font-bold">Durrell Jules</h4>
           <p className="text-gray-500">@PercivalWright</p>
-          <EllipsisHorizontalIcon className="h-7 xl:ml-8" />
         </div>
+        <EllipsisHorizontalIcon className="h-7 xl:ml-8" />
       </div>
     </div>
   );
