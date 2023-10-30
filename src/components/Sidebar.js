@@ -8,7 +8,7 @@ export default function Sidebar() {
   // todo: find a way to make the menu items bold only when selected, since they are mapped there is currently an issue.
 
   return (
-    <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full">
+    <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full xl:ml-24">
       {/* Twitter Logo */}
       <div className="hoverEffect p-0 xl:px-1">
         <Image
