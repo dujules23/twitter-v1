@@ -1,8 +1,10 @@
 import { PhotoIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
+import { useState } from "react";
 
 export default function Input() {
   const { data: session } = useSession();
+  const [input, setInput] = useState("");
   console.log(session);
   return (
     <>
@@ -20,6 +22,8 @@ export default function Input() {
                 className="w-full border-none focus:ring-0 text-lg placeholder-gray-700 tracking-wide min-h-[50px] text-gray-700"
                 rows="2"
                 placeholder="What's happening?"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
               ></textarea>
             </div>
             <div className="flex items-center justify-between pt-2.5">
@@ -27,7 +31,10 @@ export default function Input() {
                 <PhotoIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
                 <FaceSmileIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
               </div>
-              <button className="bg-blue-400 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:opacity-50">
+              <button
+                disabled={!input.trim()}
+                className="bg-blue-400 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:opacity-50"
+              >
                 Post
               </button>
             </div>
