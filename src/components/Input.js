@@ -1,11 +1,26 @@
 import { PhotoIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
+import { db } from "../../firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 export default function Input() {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
-  console.log(session);
+
+  const sendPost = async () => {
+    const docRef = await addDoc(collection(db, "posts"), {
+      id: session.user.uid,
+      text: input,
+      userImg: session.user.image,
+      timestamp: serverTimestamp(),
+      name: session.user.name,
+      username: session.user.username,
+    });
+
+    setInput("");
+  };
+
   return (
     <>
       {session && (
@@ -32,6 +47,7 @@ export default function Input() {
                 <FaceSmileIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
               </div>
               <button
+                onClick={sendPost}
                 disabled={!input.trim()}
                 className="bg-blue-400 text-white px-4 py-1.5 rounded-full font-bold shadow-md hover:brightness-95 disabled:opacity-50"
               >
