@@ -1,12 +1,21 @@
 import { PhotoIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
-import { useState } from "react";
-import { db } from "../../firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { useState, useRef } from "react";
+import { db, storage } from "../../firebase";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import { ref, getDownloadURL, uploadString } from "firebase/storage";
 
 export default function Input() {
   const { data: session } = useSession();
   const [input, setInput] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const filePickerRef = useRef(null);
 
   const sendPost = async () => {
     const docRef = await addDoc(collection(db, "posts"), {
@@ -18,7 +27,29 @@ export default function Input() {
       username: session.user.username,
     });
 
+    const imageRef = ref(storage, `posts/${docRef.id}/image`);
+
+    if (setSelectedFile) {
+      await uploadString(imageRef, selectedFile, "data_url").then(async () => {
+        const downloadURL = await getDownloadURL(imageRef);
+        await updateDoc(doc(db, "posts", docRef.id), {
+          image: downloadURL,
+        });
+      });
+    }
+
     setInput("");
+  };
+
+  const addImageToPost = (e) => {
+    const reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      setSelectedFile(readerEvent.target.result);
+    };
   };
 
   return (
@@ -43,7 +74,15 @@ export default function Input() {
             </div>
             <div className="flex items-center justify-between pt-2.5">
               <div className="flex">
-                <PhotoIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
+                <div className="" onClick={() => filePickerRef.current.click()}>
+                  <PhotoIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
+                  <input
+                    type="file"
+                    hidden
+                    ref={filePickerRef}
+                    onClick={addImageToPost}
+                  />
+                </div>
                 <FaceSmileIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
               </div>
               <button
