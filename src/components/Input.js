@@ -1,4 +1,8 @@
-import { PhotoIcon, FaceSmileIcon } from "@heroicons/react/24/outline";
+import {
+  PhotoIcon,
+  FaceSmileIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
 import { useSession, signOut } from "next-auth/react";
 import { useState, useRef } from "react";
 import { db, storage } from "../../firebase";
@@ -29,7 +33,7 @@ export default function Input() {
 
     const imageRef = ref(storage, `posts/${docRef.id}/image`);
 
-    if (setSelectedFile) {
+    if (selectedFile) {
       await uploadString(imageRef, selectedFile, "data_url").then(async () => {
         const downloadURL = await getDownloadURL(imageRef);
         await updateDoc(doc(db, "posts", docRef.id), {
@@ -39,6 +43,7 @@ export default function Input() {
     }
 
     setInput("");
+    setSelectedFile(null);
   };
 
   const addImageToPost = (e) => {
@@ -72,6 +77,16 @@ export default function Input() {
                 onChange={(e) => setInput(e.target.value)}
               ></textarea>
             </div>
+            {/* shows image preview before posting */}
+            {selectedFile && (
+              <div className="relative">
+                <XMarkIcon
+                  onClick={() => setSelectedFile(null)}
+                  className="h-7 text-white absolute cursor-pointer shadow-md shadow-white rounded-full"
+                />
+                <img src={selectedFile} />
+              </div>
+            )}
             <div className="flex items-center justify-between pt-2.5">
               <div className="flex">
                 <div className="" onClick={() => filePickerRef.current.click()}>
@@ -80,7 +95,7 @@ export default function Input() {
                     type="file"
                     hidden
                     ref={filePickerRef}
-                    onClick={addImageToPost}
+                    onChange={addImageToPost}
                   />
                 </div>
                 <FaceSmileIcon className="h-10 w-10 hoverEffect p-2 text-sky-500 hover:bg-sky-100" />
