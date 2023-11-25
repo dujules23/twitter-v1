@@ -6,6 +6,7 @@ import {
   ShareIcon,
   ChartBarIcon,
 } from "@heroicons/react/24/outline";
+import Moment from "react-moment";
 
 export default function Post({ post }) {
   return (
@@ -32,7 +33,7 @@ export default function Post({ post }) {
               @{post.data().username} -{" "}
             </span>
             <span className="text-sm sm:text-[15px] hover:underline">
-              {post.timestamp}
+              <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
             </span>
           </div>
           {/* dot icon */}
