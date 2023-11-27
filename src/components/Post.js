@@ -91,12 +91,13 @@ export default function Post({ post }) {
         </p>
 
         {/* post image */}
-
-        <img
-          className="rounded-2xl mr-2"
-          src={post.data().image}
-          alt="post image"
-        />
+        {post.data().image && (
+          <img
+            className="rounded-2xl mr-2"
+            src={post.data().image}
+            alt="post image"
+          />
+        )}
         {/* post icons */}
 
         <div className="flex justify-between text-gray-500 p-2">
