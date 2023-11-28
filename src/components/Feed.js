@@ -10,8 +10,7 @@ export default function Feed() {
 
   useEffect(() => {
     return onSnapshot(
-      query(collection(db, "posts")),
-      orderBy("timestamp", "desc"),
+      query(collection(db, "posts"), orderBy("timestamp", "desc")),
       (snapshot) => setPosts(snapshot.docs)
     );
   }, []);
