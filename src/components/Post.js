@@ -44,8 +44,10 @@ export default function Post({ post }) {
     if (window.confirm("Are you sure you want to delete this post?")) {
       // deletes posts
       deleteDoc(doc(db, "posts", post.id));
-      // deletes photos from the firebase storage
-      deleteObject(ref(storage, `posts/${post.id}/image`));
+      if (post.data().image) {
+        // deletes photos from the firebase storage
+        deleteObject(ref(storage, `posts/${post.id}/image`));
+      }
     }
   };
 
