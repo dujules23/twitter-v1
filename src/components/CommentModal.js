@@ -2,10 +2,24 @@ import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../../atom/modalAtom";
 import Modal from "react-modal";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
+import { db } from "../../firebase";
+import { doc, onSnapshot } from "firebase/firestore";
+import Moment from "react-moment";
+import { useSession } from "next-auth/react";
 
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
   const [postId] = useRecoilState(postIdState);
+  const [post, setPost] = useState({});
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    onSnapshot(doc(db, "posts", postId), (snapshot) => {
+      setPost(snapshot);
+    });
+  }, [postId, db]);
+
   return (
     <div>
       {open && (
@@ -20,10 +34,27 @@ export default function CommentModal() {
                 onClick={() => setOpen(false)}
                 className=" hoverEffect w-12 h-12 flex items-center justify-center"
               >
-                <XMarkIcon className="h-[22px] text-gray-700" />
+                <XMarkIcon className="h-[23px] text-gray-700" />
               </div>
             </div>
-            <h1>{postId}</h1>
+
+            <div className="p-2 flex items-center space-x-1 relative">
+              <span className="w-0.5 h-full z-[-1] absolute left-8 top-11 bg-gray-300" />
+              <img
+                className="h-11 w-11 rounded-full mr-4"
+                src={post.data()?.userImg}
+                about="user-image"
+              />
+              <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">
+                {post.data()?.name}
+              </h4>
+              <span className="text-sm sm:text-[15px]">
+                @{post.data()?.username} -{" "}
+              </span>
+              <span className="text-sm sm:text-[15px] hover:underline">
+                <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
+              </span>
+            </div>
           </div>
         </Modal>
       )}
