@@ -1,10 +1,11 @@
 import { useRecoilState } from "recoil";
-import { modalState } from "../../atom/modalAtom";
+import { modalState, postIdState } from "../../atom/modalAtom";
 import Modal from "react-modal";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function CommentModal() {
   const [open, setOpen] = useRecoilState(modalState);
+  const [postId] = useRecoilState(postIdState);
   return (
     <div>
       {open && (
@@ -22,6 +23,7 @@ export default function CommentModal() {
                 <XMarkIcon className="h-[22px] text-gray-700" />
               </div>
             </div>
+            <h1>{postId}</h1>
           </div>
         </Modal>
       )}
