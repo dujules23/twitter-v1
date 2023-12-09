@@ -58,7 +58,7 @@ export default function CommentModal() {
                 <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
               </span>
             </div>
-
+            {/* shows comment that is being commented on */}
             <p className="text-gray-500 text-[15px] sm:text-[16px] ml-16 mb-2">
               {post?.data()?.text}
             </p>

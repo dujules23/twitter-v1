@@ -89,7 +89,7 @@ export default function Post({ post }) {
 
       {/* right side */}
 
-      <div className="">
+      <div className="flex-1">
         {/* Header */}
 
         <div className="flex items-center justify-between">
