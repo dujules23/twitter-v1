@@ -4,10 +4,14 @@ import Head from "next/head";
 import Sidebar from "../../components/Sidebar";
 import Widgets from "@/components/Widgets";
 import CommentModal from "@/components/CommentModal";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Post({ newsResults, randomUsersResults }) {
+  const router = useRouter();
+
   return (
     <div>
       <Head>
@@ -19,9 +23,12 @@ export default function Post({ newsResults, randomUsersResults }) {
         <Sidebar />
 
         <div className="xl:ml-[370px] border-l border-r border-gray-200 xl:min-w-[576px] sm:ml-[73px] flex-grow max-w-xl">
-          <div className="flex py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
+          <div className="flex items-center space-x-2 py-2 px-3 sticky top-0 z-50 bg-white border-b border-gray-200">
+            <div className="hoverEffect" onClick={() => router.push("/")}>
+              <ArrowLeftIcon className="h-5" />
+            </div>
             <h2 className="text-lg sm:text-xl font-bold cursor-pointer">
-              Home
+              Post
             </h2>
           </div>
         </div>
