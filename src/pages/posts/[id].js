@@ -7,9 +7,16 @@ import Post from "@/components/Post";
 import CommentModal from "@/components/CommentModal";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { onSnapshot, doc } from "firebase/firestore";
+import {
+  onSnapshot,
+  doc,
+  query,
+  collection,
+  orderBy,
+} from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { db } from "../../../firebase";
+import Comment from "@/components/Comment";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +24,22 @@ export default function PostPage({ newsResults, randomUsersResults }) {
   const router = useRouter();
   const { id } = router.query;
   const [post, setPost] = useState();
+  const [comments, setComments] = useState([]);
 
+  // grabs the Post data
   useEffect(() => {
     onSnapshot(doc(db, "posts", id), (snapshot) => setPost(snapshot));
+  }, [db, id]);
+
+  // grabs the comments
+  useEffect(() => {
+    onSnapshot(
+      query(
+        collection(db, "posts", id, "comments"),
+        orderBy("timestamp", "desc")
+      ),
+      (snapshot) => setComments(snapshot.docs)
+    );
   }, [db, id]);
 
   return (
@@ -45,6 +65,18 @@ export default function PostPage({ newsResults, randomUsersResults }) {
           </div>
 
           <Post id={id} post={post} />
+
+          {comments.length > 0 && (
+            <div className="">
+              {comments.map((comment) => (
+                <Comment
+                  key={comment.id}
+                  id={comment.id}
+                  comment={comment.data()}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Widgets */}

@@ -22,6 +22,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { modalState, postIdState } from "../../atom/modalAtom";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
+import { Image } from "next/image";
 
 export default function Post({ post, id }) {
   const { data: session } = useSession();
