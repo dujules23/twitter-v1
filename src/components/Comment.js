@@ -99,7 +99,7 @@ export default function Comment({ comment, commentId, originalPostId }) {
   }, [likes]);
 
   return (
-    <div className="flex p-3 cursor-pointer border-b border-gray-200">
+    <div className="flex p-3 cursor-pointer border-b border-gray-200 pl-20">
       {/*  User image */}
       <img
         className="h-11 w-11 rounded-full mr-4"
@@ -116,13 +116,13 @@ export default function Comment({ comment, commentId, originalPostId }) {
           {/* post user Info */}
           <div className="flex items-center space-x-1 whitespace-nowrap">
             <h4 className="font-bold text-[15px] sm:text-[16px] hover:underline">
-              {post?.data()?.name}
+              {comment?.name}
             </h4>
             <span className="text-sm sm:text-[15px]">
-              @{post?.data()?.username} -{" "}
+              @{comment?.username} -{" "}
             </span>
             <span className="text-sm sm:text-[15px] hover:underline">
-              <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
+              <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </span>
           </div>
           {/* dot icon */}
@@ -132,17 +132,9 @@ export default function Comment({ comment, commentId, originalPostId }) {
         {/* post text */}
 
         <p className="text-gray-800 text-[15px sm:text-[16px] mb-2]">
-          {post?.data()?.text}
+          {comment?.comment}
         </p>
 
-        {/* post image */}
-        {post?.data()?.image && (
-          <img
-            className="rounded-2xl mr-2"
-            src={post?.data()?.image}
-            alt="post image"
-          />
-        )}
         {/* post icons */}
 
         <div className="flex justify-between text-gray-500 p-2">
@@ -151,11 +143,11 @@ export default function Comment({ comment, commentId, originalPostId }) {
               onClick={() => composeComment()}
               className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100  "
             />
-            {comments.length > 0 && (
+            {comment?.length > 0 && (
               <span className="text-sm">{comments.length}</span>
             )}
           </div>
-          {session?.user.uid === post?.data()?.id && (
+          {session?.user.uid === comment?.id && (
             <TrashIcon
               onClick={deletePost}
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
@@ -165,12 +157,12 @@ export default function Comment({ comment, commentId, originalPostId }) {
             {hasLiked ? (
               <HeartIconFilled
                 className="h-9 w-9 hoverEffect p-2 text-red-600 hover:bg-red-100"
-                onClick={likePost}
+                onClick={likeComment}
               />
             ) : (
               <HeartIcon
                 className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
-                onClick={likePost}
+                onClick={likeComment}
               />
             )}
             {likes.length > 0 && (
