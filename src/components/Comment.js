@@ -147,9 +147,9 @@ export default function Comment({ comment, commentId, originalPostId }) {
               <span className="text-sm">{comments.length}</span>
             )}
           </div>
-          {session?.user.uid === comment?.id && (
+          {session?.user.uid === comment?.userId && (
             <TrashIcon
-              onClick={deletePost}
+              onClick={deleteComment}
               className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
             />
           )}
